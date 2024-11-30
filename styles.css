@@ -70,7 +70,7 @@ a{
     flex-wrap: nowrap;
     align-items: center;
     align-content: stretch;
-    justify-content: space-around;
+    justify-content: space-between;
     
     /* gap:150px; */
 
@@ -87,8 +87,10 @@ a{
     flex-wrap: nowrap;
     align-items: center;
     align-content: stretch;
-    justify-content: space-around;
+    justify-content: space-between;
     
+    
+
     /* gap:150px; */
 
     background-color: #252933;
@@ -125,3 +127,32 @@ a{
     background-color:#F29200;
     color:#1B1E25;
 }
+
+
+@media only screen and (max-width: 1400px) {
+    #main-container{
+        width:80%;
+        margin-left:10%;
+        margin-top:25px;
+    }
+    #title{
+        text-align: center;
+        font-size:75px;
+        color:#F29200;
+    }
+  }
+
+  @media only screen and (max-width: 800px) {
+    #main-container{
+        width:100%;
+        margin-left:0%;
+        margin-top:25px;
+    }
+    #upload-button{
+        width:75%;
+    }
+    #title{
+        font-size:60px;
+    }
+
+  }
