@@ -63,7 +63,7 @@ a{
 }   
 
 .file-a-1{
-    height: 40px;
+    height: 50px;
     width:100%;
 
     display: flex;
@@ -80,7 +80,7 @@ a{
 }
 
 .file-a-2{
-    height: 40px;
+    height: 50px;
     width:100%;
 
     display: flex;
@@ -107,6 +107,8 @@ a{
 
 #upload-button{
     width:100%;
+    margin-bottom: 50px;
+
     text-decoration: none;
     outline: none;
     cursor:pointer;
@@ -140,9 +142,22 @@ a{
         font-size:75px;
         color:#F29200;
     }
+
+    .file-a-1{
+        height:75px;
+    }
+
+    .file-a-2{
+        height:75px;
+    }
+
+    .file-desc{
+        font-size:22px;
+    }
+
   }
 
-  @media only screen and (max-width: 800px) {
+  @media only screen and (max-width: 900px) {
     #main-container{
         width:100%;
         margin-left:0%;
