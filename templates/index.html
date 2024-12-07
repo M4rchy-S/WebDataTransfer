@@ -30,14 +30,24 @@
                     <span class="file-desc">21:56:14 - 29.11.2024</span>
                 </a> -->
 
-           {% for name in names %}
-
-            <a href="/data/{{name}}" class="file-a-1" download>
-                <span class="file-name">{{ name }}</span>
-                <span class="file-desc">21:56:14 - 29.11.2024</span>
-            </a>
-
+            <div id="file-container">
+            {% for name in names %}
+            
+                {% if loop.index % 2 == 0 %}
+                    <a href="/data/{{name}}" class="file-a-1" download>
+                        <span class="file-name">{{ name }}</span>
+                        <span class="file-desc">21:56:14 - 29.11.2024</span>
+                    </a>
+                {% else %}
+                    <a href="/data/{{name}}" class="file-a-2" download>
+                        <span class="file-name">{{ name }}</span>
+                        <span class="file-desc">21:56:14 - 29.11.2024</span>
+                    </a>
+                {% endif %}
+            
             {% endfor %} 
+
+            </div>
                
 
             <button id="upload-button">
