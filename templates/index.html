@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>WebDataTransfer</title>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
     </head>
 
@@ -36,10 +36,31 @@
                 UPLOAD FILES
             </button>
 
+            <form id="upload-form" action="#" method="post" enctype="multipart/form-data" style="display: none;">
+                <input type="file" id="files" name="files[]" multiple>
+                <button type="submit">Загрузить</button>
+            </form>
+
         </div>
 
         
     </body>
+
+   
+
+    <script>
+        const uploadBtn = document.getElementById('upload-button');
+        const fileInput = document.getElementById('files');
+
+        uploadBtn.addEventListener('click', () => {
+            fileInput.click(); // Открыть окно выбора файлов
+        });
+
+        fileInput.addEventListener('change', () => {
+            // Автоматическая отправка формы после выбора файлов
+            document.getElementById('upload-form').submit();
+        });
+    </script>
 
     <script>
             var files = document.getElementsByClassName("file-name");
