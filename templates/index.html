@@ -12,7 +12,7 @@
 
             <h1 id="title">Web Data Transfer</h1>
 
-            <div id="file-container">
+            <!-- <div id="file-container">
                 <a href="" class="file-a-1">
                     <span class="file-name">image1.jpg</span>
                     <span class="file-desc">21:56:14 - 29.11.2024</span>
@@ -28,9 +28,17 @@
                 <a href="" class="file-a-2">
                     <span class="file-name">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.mv4</span>
                     <span class="file-desc">21:56:14 - 29.11.2024</span>
-                </a>
+                </a> -->
+
+           {% for name in names %}
+
+            <a href="/data/{{name}}" class="file-a-1" download>
+                <span class="file-name">{{ name }}</span>
+                <span class="file-desc">21:56:14 - 29.11.2024</span>
+            </a>
+
+            {% endfor %} 
                
-            </div>
 
             <button id="upload-button">
                 UPLOAD FILES
