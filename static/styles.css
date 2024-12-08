@@ -71,6 +71,7 @@ a{
     align-items: center;
     align-content: stretch;
     justify-content: space-between;
+    padding: 5px;
     
     /* gap:150px; */
 
@@ -88,9 +89,8 @@ a{
     align-items: center;
     align-content: stretch;
     justify-content: space-between;
+    padding: 5px;
     
-    
-
     /* gap:150px; */
 
     background-color: #252933;
