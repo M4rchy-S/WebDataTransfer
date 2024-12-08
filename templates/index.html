@@ -13,18 +13,18 @@
             <h1 id="title">Web File Transfer</h1>
 
             <div id="file-container">
-            {% for name in names %}
+            {% for name, size in files %}
             
                 {% if loop.index % 2 == 0 %}
                     <a href="/data/{{name}}" class="file-a-1" download>
                         <span class="file-name">{{ name }}</span>
-                        <span class="file-desc">14 Mb</span>
+                        <span class="file-desc">{{ size }}</span>
                         <!-- <span class="file-desc">21:56:14 - 29.11.2024</span> -->
                     </a>
                 {% else %}
                     <a href="/data/{{name}}" class="file-a-2" download>
                         <span class="file-name">{{ name }}</span>
-                        <span class="file-desc">32 Kb</span>
+                        <span class="file-desc">{{ size }}</span>
                         <!-- <span class="file-desc">21:56:14 - 29.11.2024</span> -->
                     </a>
                 {% endif %}
@@ -69,10 +69,19 @@
             var files = document.getElementsByClassName("file-name");
             for( var i = 0; i < files.length; i++)
             {
-                if( files[i].innerHTML.length >=  30)
+                // if( files[i].innerHTML.length >=  35)
+                // {
+                //     var parser = files[i].innerHTML.split(".");
+                //     parser[0] = parser[0].substr(0, 32) + "..";
+                //     files[i].innerHTML = parser.join(".");
+                // }
+                if( files[i].innerHTML.length >=  55)
                 {
                     var parser = files[i].innerHTML.split(".");
-                    parser[0] = parser[0].substr(0, 27) + "___";
+                    part_1 = parser[0].substr(0, 8);
+                    part_2 = parser[0].substr(files[i].innerHTML.length - 10);
+                    parser[0] = part_1 + "..." + part_2;
+
                     files[i].innerHTML = parser.join(".");
                 }
             }

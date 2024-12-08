@@ -21,6 +21,7 @@ def download(filename):
 @app.route("/", methods=['POST', 'GET'])
 @app.route("/index.html")
 def main_page():
+    #   --- Uploading upload multiple files in method POST ---
     if request.method == "POST":
         if 'files[]' not in request.files:
             print("[!] No file part")
@@ -32,10 +33,25 @@ def main_page():
             filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return redirect(url_for("main_page"))
-        
+    
+    #   --- Showing main page ---
+
     # print("[DEBUG] " + os.path.join(current_app.root_path, "data"))
-    file_names = os.listdir(os.path.join(current_app.root_path, "data"))
-    return render_template("index.html", names=file_names)
+    file_names = os.listdir(os.path.join(current_app.root_path, "data"))                        # get file names
+    file_sizes = []                                                                             # get file sizes
+    for file in file_names:
+        size = os.path.getsize(os.path.join(app.config['UPLOAD_FOLDER'], file))
+        if size >= 1024 * 1024 * 1024:
+            file_sizes.append('{:.2f}'.format(size / 1024 / 1024 / 1024) + " Gb")
+        elif size >= 1024 * 1024:
+            file_sizes.append('{:.2f}'.format(size / 1024 / 1024) + " Mb")
+        elif size >= 1024:
+            file_sizes.append('{:.2f}'.format(size / 1024) + " Kb")
+        else:
+            file_sizes.append(str(size) + " b")
+    
+    files_data = list( zip(file_names, file_sizes) )
+    return render_template("index.html", files=files_data)
 
 
 
