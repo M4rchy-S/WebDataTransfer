@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, send_from_directory, request
 import os
 from jinja2 import Template
-from werkzeug.utils import secure_filename
+import logging
 
 def my_template(files_input):
     html_tempalte =  """
@@ -22,6 +22,7 @@ def my_template(files_input):
             <h1 id="title">Web File Transfer</h1>
 
             <div id="file-container">
+
             {% for name, size in files %}
             
                 {% if loop.index % 2 == 0 %}
@@ -37,8 +38,7 @@ def my_template(files_input):
                         <!-- <span class="file-desc">21:56:14 - 29.11.2024</span> -->
                     </a>
                 {% endif %}
-            
-            {% endfor %} 
+            {% endfor %}
 
             </div>
                
@@ -288,39 +288,42 @@ app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), "data")
 
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__) 
+
+app.logger.disabled = True
+# logging.getLogger('werkzeug').setLevel(logging.WARNING)
+
+
 @app.errorhandler(404)
 def page_not_found(error):
+    # logging.info("Redirecting client")
     return redirect(url_for("main_page"))
 
 @app.route("/data/<path:filename>", methods=["GET"])
 def download(filename):
-    # downloads = os.path.join(current_app.root_path, "data")
     downloads = app.config['UPLOAD_FOLDER']
-    print("[DEBUG] " + downloads + "/" + filename)
+    logging.info('\033[96m' + f"Client downloading file '{filename}'" + '\033[0m')
     return send_from_directory(downloads, filename)
 
 
 @app.route("/", methods=['POST', 'GET'])
-@app.route("/index.html")
+@app.route("/index.html", methods=['POST', 'GET'])
 def main_page():
     #   --- Uploading upload multiple files in method POST ---
     if request.method == "POST":
         if 'files[]' not in request.files:
-            print("[!] No file part")
+            logger.error('Error in client request')
             return redirect(url_for("main_page"))
-        # file = request.files['files[]']
         files = request.files.getlist('files[]')
         for file in files:
-            # filename = secure_filename(file.filename)
-            filename = file.filename
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            logger.info('\033[92m' + f"Uploading file to server : '{file.filename}' " + '\033[0m')
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
         return redirect(url_for("main_page"))
     
     #   --- Showing main page ---
 
-    # print("[DEBUG] " + os.path.join(current_app.root_path, "data"))
-    # file_names = os.listdir(os.path.join(current_app.root_path, "data"))                        # get file names
-    file_names = os.listdir(app.config['UPLOAD_FOLDER'])                        # get file names
+    file_names = os.listdir(app.config['UPLOAD_FOLDER'])                                        # get file names
     file_sizes = []                                                                             # get file sizes
     for file in file_names:
         size = os.path.getsize(os.path.join(app.config['UPLOAD_FOLDER'], file))
@@ -334,12 +337,30 @@ def main_page():
             file_sizes.append(str(size) + " b")
     
     files_data = list( zip(file_names, file_sizes) )
-    # return render_template("index.html", files=files_data)
-    # return "<h1> test </h1>"
     return my_template(files_data)
 
 
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=80)
+
+    print("""
+ __        __     _       _____  _  _           
+ \ \      / /___ | |__   |  ___|(_)| |  ___     
+  \ \ /\ / // _ \| '_ \  | |_   | || | / _ \    
+   \ V  V /|  __/| |_) | |  _|  | || ||  __/    
+  __\_/\_/  \___||_.__/  |_|    |_||_| \___|    
+ |_   _|_ __  __ _  _ __   ___  / _|  ___  _ __ 
+   | | | '__|/ _` || '_ \ / __|| |_  / _ \| '__|
+   | | | |  | (_| || | | |\__ \|  _||  __/| |   
+   |_| |_|   \__,_||_| |_||___/|_|   \___||_|   
+                                                   
+                                           
+    """)
+
+    if os.path.exists('data') == False:
+        os.mkdir('data')
+    
+    # print('\033[33m' + "   Use Ctrl+C to close the program" + '\033[0m')
+    
+    app.run(debug=False, host="0.0.0.0", port=80)
