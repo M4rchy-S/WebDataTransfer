@@ -164,7 +164,7 @@ a{
 }   
 
 .file-a-1{
-    height: 50px;
+    height: 30px;
     width:100%;
 
     display: flex;
@@ -182,7 +182,7 @@ a{
 }
 
 .file-a-2{
-    height: 50px;
+    height: 30px;
     width:100%;
 
     display: flex;
