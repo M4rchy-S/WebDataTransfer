@@ -323,7 +323,14 @@ def main_page():
     
     #   --- Showing main page ---
 
-    file_names = os.listdir(app.config['UPLOAD_FOLDER'])                                        # get file names
+    # file_names = os.listdir(app.config['UPLOAD_FOLDER'])                                        # get file names
+    
+    file_names = []
+    with os.scandir(app.config['UPLOAD_FOLDER']) as it:
+        for entry in it:
+            if entry.is_file() == True:
+                file_names.append(entry.name)
+                
     file_sizes = []                                                                             # get file sizes
     for file in file_names:
         size = os.path.getsize(os.path.join(app.config['UPLOAD_FOLDER'], file))
